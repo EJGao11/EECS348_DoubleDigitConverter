@@ -6,6 +6,7 @@ using namespace std;
 #define EXIT 0
 #define DECIMAL_LENGTH 4
 #define INVALID_DOUBLE_PRECISION_VALUE -999999.99
+#define MAX_STRING_LENGTH 20
 #define INPUT_END "END"
 
 double extractNumeric( const string& str );
@@ -46,7 +47,7 @@ double extractNumeric( const string& str )
     size_t index = 0;
     bool isNegative = false;
 
-    if( str.empty() ) 
+    if( str.empty() || str.length() > MAX_STRING_LENGTH) 
     {
         return INVALID_DOUBLE_PRECISION_VALUE;
     }
@@ -91,6 +92,9 @@ double extractNumeric( const string& str )
         }
 
     }
-    return !foundError && isNegative ? -result : result;
+
+    return result == 0.0 ? 0.0 : // Used to convert -0.0 or +0.0 to 0.0 
+        ( !foundError && isNegative ? -result : result );
+
 #endif
 }
